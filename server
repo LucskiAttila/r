@@ -1,0 +1,174 @@
+/***************************************/
+/*              TCP server             */
+/***************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <netinet/in.h> 
+
+#define BUFSIZE 1024                      // buffer size
+#define PORT_NO 2001                      // port number
+#define error(a,b) fprintf(stderr, a, b)  // error 'function'
+
+int main(int argc, char *argv[] ){ 	// arg count, arg vector 
+
+   /* Declarations */
+	char z[198];
+	char e[198];
+	char u[198];
+	int m,w,q,i;
+	int n=0;
+	int h=0;
+	char r[12];
+	struct sockaddr_in client1;
+	char j,k=2;
+	int close(int f);
+	int fdcc;
+   int fd;	        	           		// socket endpt
+   int fdc;                        	// socket endpt
+   int flags;                      	// rcv flags
+   struct sockaddr_in server;      	// socket name (addr) of server
+   struct sockaddr_in client;	     	// socket name of client
+   int server_size;                	// length of the socket addr. server
+   int client_size;                	// length of the socket addr. client
+   int bytes;		           					// length of buffer 
+   int rcvsize;                    	// received bytes
+   int trnmsize;                   	// transmitted bytes
+   int err;                        	// error code
+   char on;                        	// 
+   char buffer[BUFSIZE+1];	     		// datagram dat buffer area   
+
+   /* Initialization */
+   on                     = 1;
+   flags                  = 0;
+   bytes                  = BUFSIZE;
+   server_size            = sizeof server;
+   client_size            = sizeof client;
+   server.sin_family      = AF_INET;
+   server.sin_addr.s_addr = INADDR_ANY;
+   server.sin_port        = htons(PORT_NO);
+
+   /* Creating socket */
+   fd = socket(AF_INET, SOCK_STREAM, 0 );
+   if (fd < 0) {
+      error("%s: Socket creation error\n",argv[0]);
+      exit(1);
+      }
+
+   /* Setting socket options */
+   setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (char *)&on, sizeof on);
+   setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (char *)&on, sizeof on);
+
+ /* Binding socket */
+   err = bind(fd, (struct sockaddr *) &server, server_size);
+   if (err < 0) {
+      error("%s: Cannot bind to the socket\n",argv[0]);
+      exit(2);
+      }
+
+   /* Listening */
+   err = listen(fd, 10);
+   if (err < 0) {
+      error("%s: Cannot listen to the socket\n",argv[0]);
+      exit(3);
+      }
+  
+   /* Accepting connection request */
+   fdc = accept(fd, (struct sockaddr *) &client, &client_size);
+   if (fdc < 0) {
+      error("%s: Cannot accept on socket\n",argv[0]);
+      exit(4);
+      }
+	//else {i=1;}
+
+/* Accepting connection request */
+   fdcc = accept(fd, (struct sockaddr *) &client1, &client_size);
+   if (fdc < 0) {
+      error("%s: Cannot accept on socket\n",argv[0]);
+      exit(4);
+      }
+	//else{ i=2;}
+for(i=0;i<198;i++){
+u[i]=0;}
+for(i=0;i<12;i++){
+r[i]=0;}
+while(1){
+if(h==0){
+recv( fdc, &j, 1, flags);
+send(fdc, &k, 1, flags);
+recv( fdcc, &j, 1, flags);
+send(fdcc, &k, 1, flags);
+++h;}
+
+recv( fdc, r, 6, flags );
+for(j=0;j<6;j++){printf("%d\n",r[j]);}
+if(r[0]==-1 && r[1]==-1 && r[2]==-1 && r[3]==-1 && r[4]==-1 && r[5]==-1){}
+else{
+q=0; w=0;
+for(i=0;i<198;i++){
+	if(i%2==0){
+	if(r[0]==u[i]){
+		if(u[i+1]==r[1]){w=1; break;}}
+	if(r[2]==u[i]){
+		if(u[i+1]==r[3]){w=1; break;}}
+	if(r[4]==u[i]){
+		if(u[i+1]==r[5]){w=1; break;}}}}
+
+if(w==1){
+for(i=0;i<6;i++){r[i]=0;}}
+else{
+for(m=n*6;m<m+6;m++){
+	for(i=0+q;i<6;i++){
+	e[m]=r[i];
+	q++;
+	break;}}
+q=0;
+for(m=n*6;m<m+6;m++){
+	for(i=0+q;i<6;i++){
+	u[m]=r[i];
+	q++;
+	break;}}
+n++;}}
+
+send(fdc, r, 12, flags);
+
+recv( fdcc, &r[6], 6, flags );
+
+if(r[6]==-1 && r[7]==-1 && r[8]==-1 && r[9]==-1 && r[10]==-1 && r[11]==-1){}
+else{
+q=0; w=0;
+for(i=0;i<198;i++){
+	if(i%2==0){
+	if(r[6]==u[i]){
+		if(u[i+1]==r[7]){w=1; break;}}
+	if(r[8]==u[i]){
+		if(u[i+1]==r[9]){w=1; break;}}
+	if(r[10]==u[i]){
+		if(u[i+1]==r[11]){w=1; break;}}}}
+
+if(w==1){
+for(i=6;i<12;i++){r[i]=0;}}
+else{
+for(m=n*6;m<m+6;m++){
+	for(i=0+q;i<6;i++){
+	z[m]=r[i];
+	q++;
+	break;}}
+q=0;
+for(m=n*6;m<m+6;m++){
+	for(i=6+q;i<12;i++){
+	u[m]=r[i];
+	q++;
+	break;}}
+n++;}}
+
+send(fdcc, r, 12, flags);
+}
+
+	close(fdcc);
+	close(fdc);
+	close(fd);
+	exit(0);
+} 
