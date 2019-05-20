@@ -102,8 +102,12 @@ recv( fdcc, &j, 1, flags);
 send(fdcc, &k, 1, flags);
 ++h;}
 
+recv( fdc, &j, 1, flags);
+send(fdc, &k, 1, flags);
+
 recv( fdc, r, 6, flags );
-for(j=0;j<6;j++){printf("%d\n",r[j]);}
+if(r[0]==-1 && r[1]==-1 && r[2]==-1 && r[3]==-1 && r[4]==-1 && r[5]==-1 && r[6]==-1 && r[7]==-1 && r[8]==-1 && r[9]==-1 && r[10]==-1 && r[11]==-1){send(fdc, r, 12, flags); send(fdcc, r, 12, flags);}
+else{
 if(r[0]==-1 && r[1]==-1 && r[2]==-1 && r[3]==-1 && r[4]==-1 && r[5]==-1){}
 else{
 q=0; w=0;
@@ -132,10 +136,10 @@ for(m=n*6;m<m+6;m++){
 	break;}}
 n++;}}
 
-send(fdc, r, 12, flags);
+recv( fdcc, &j, 1, flags);
+send(fdcc, &k, 1, flags);
 
 recv( fdcc, &r[6], 6, flags );
-
 if(r[6]==-1 && r[7]==-1 && r[8]==-1 && r[9]==-1 && r[10]==-1 && r[11]==-1){}
 else{
 q=0; w=0;
@@ -163,9 +167,9 @@ for(m=n*6;m<m+6;m++){
 	q++;
 	break;}}
 n++;}}
-
+send(fdc, r, 12, flags);
 send(fdcc, r, 12, flags);
-}
+}}
 
 	close(fdcc);
 	close(fdc);
